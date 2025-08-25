@@ -59,6 +59,16 @@ src/
 - **Validação de entrada**: Parâmetros inválidos e exceções
 - **Casos extremos**: Arrays vazios, elementos únicos
 - **Fórmula APDEX**: Verificação matemática da implementação
+- **Testes de classificação específicos**: Exemplos práticos para cada nível APDEX
+
+### Exemplos de Testes por Classificação
+
+- **EXCELLENT**: `[50, 75, 90]` com T=100 → APDEX = 1.0
+- **GOOD**: Dataset RM 555130 → APDEX = 0.90
+- **FAIR**: `[50, 75, 90, 100, 500]` com T=100 → APDEX = 0.8
+- **POOR**: `[100, 100, 400, 401, 1000]` com T=100 → APDEX = 0.5
+- **UNACCEPTABLE**: `[0, 98, 2]` contagens → APDEX = 0.49
+
 
 ### Annotations JUnit
 
@@ -108,6 +118,20 @@ Onde:
 - [x] Uso de @BeforeAll para contexto apropriado
 - [x] Cobertura de todas as classificações APDEX
 - [x] Testes passando com sucesso no IntelliJ + JDK 17
+
+### Logs de Teste Esperados
+
+```
+✅ sampleBased_apdexAndClassification_withRmDataset
+✅ countsBased_classification_excellent
+✅ countsBased_classification_good
+✅ countsBased_classification_fair
+✅ countsBased_classification_poor
+✅ countsBased_classification_unacceptable
+✅ sampleBased_boundary_includesEquals
+✅ sampleBased_fair_classification_example
+... (todos os testes passando)
+```
 
 ## Repositório GitHub
 

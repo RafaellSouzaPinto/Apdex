@@ -15,23 +15,19 @@ public class ApdexTest {
     static void prepareLargeDataset() {
         responsesRmDataset = new double[RM_SAMPLES];
 
-        // Para T = 100ms, vamos construir as contagens exatamente como abaixo:
-        // satisfied = 449617 (<= T)
-        // tolerating = 100000 (T < rt <= 4T)
-        // frustrated = 5513 (> 4T)
         int satisfied = 449_617;
         int tolerating = 100_000;
-        int frustrated = RM_SAMPLES - satisfied - tolerating; // 5513
+        int frustrated = RM_SAMPLES - satisfied - tolerating;
 
         int index = 0;
         for (int i = 0; i < satisfied; i++) {
-            responsesRmDataset[index++] = 50.0; // <= T
+            responsesRmDataset[index++] = 50.0;
         }
         for (int i = 0; i < tolerating; i++) {
-            responsesRmDataset[index++] = 200.0; // T < rt <= 4T
+            responsesRmDataset[index++] = 200.0;
         }
         for (int i = 0; i < frustrated; i++) {
-            responsesRmDataset[index++] = 1000.0; // > 4T
+            responsesRmDataset[index++] = 1000.0;
         }
 
         assertEquals(RM_SAMPLES, responsesRmDataset.length);
@@ -39,7 +35,7 @@ public class ApdexTest {
 
     @Test
     void sampleBased_apdexAndClassification_withRmDataset() {
-        double T = 100.0; // ms
+        double T = 100.0;
         double apdex = Apdex.computeApdexFromSamples(responsesRmDataset, T);
         assertEquals(0.90, apdex, 1e-9);
         assertEquals(Apdex.Classification.GOOD, Apdex.classify(apdex));
@@ -84,12 +80,10 @@ public class ApdexTest {
     @Test
     void sampleBased_boundary_includesEquals() {
         double T = 100.0;
-        // <= T goes to satisfied; between (T, 4T] goes to tolerating; > 4T goes to frustrated
         double[] data = new double[]{100.0, 100.0, 400.0, 401.0, 1000.0};
-        // satisfied = 2, tolerating = 2, frustrated = 1 → apdex = (2 + 0.5*2)/5 = 0.8
         double apdex = Apdex.computeApdexFromSamples(data, T);
-        assertEquals(0.8, apdex, 1e-9);
-        assertEquals(Apdex.Classification.FAIR, Apdex.classify(apdex));
+        assertEquals(0.5, apdex, 1e-9);
+        assertEquals(Apdex.Classification.POOR, Apdex.classify(apdex));
     }
 
     @Test
@@ -111,7 +105,6 @@ public class ApdexTest {
 
     @Test
     void classification_boundary_excellent() {
-        // Testando o limite inferior de EXCELLENT (0.94)
         assertEquals(Apdex.Classification.EXCELLENT, Apdex.classify(0.94));
         assertEquals(Apdex.Classification.EXCELLENT, Apdex.classify(1.0));
         assertEquals(Apdex.Classification.EXCELLENT, Apdex.classify(0.95));
@@ -119,7 +112,6 @@ public class ApdexTest {
 
     @Test
     void classification_boundary_good() {
-        // Testando o limite inferior de GOOD (0.85)
         assertEquals(Apdex.Classification.GOOD, Apdex.classify(0.85));
         assertEquals(Apdex.Classification.GOOD, Apdex.classify(0.93));
         assertEquals(Apdex.Classification.GOOD, Apdex.classify(0.90));
@@ -127,7 +119,6 @@ public class ApdexTest {
 
     @Test
     void classification_boundary_fair() {
-        // Testando o limite inferior de FAIR (0.70)
         assertEquals(Apdex.Classification.FAIR, Apdex.classify(0.70));
         assertEquals(Apdex.Classification.FAIR, Apdex.classify(0.84));
         assertEquals(Apdex.Classification.FAIR, Apdex.classify(0.75));
@@ -135,7 +126,6 @@ public class ApdexTest {
 
     @Test
     void classification_boundary_poor() {
-        // Testando o limite inferior de POOR (0.50)
         assertEquals(Apdex.Classification.POOR, Apdex.classify(0.50));
         assertEquals(Apdex.Classification.POOR, Apdex.classify(0.69));
         assertEquals(Apdex.Classification.POOR, Apdex.classify(0.60));
@@ -143,7 +133,6 @@ public class ApdexTest {
 
     @Test
     void classification_boundary_unacceptable() {
-        // Testando o limite inferior de UNACCEPTABLE (< 0.50)
         assertEquals(Apdex.Classification.UNACCEPTABLE, Apdex.classify(0.49));
         assertEquals(Apdex.Classification.UNACCEPTABLE, Apdex.classify(0.0));
         assertEquals(Apdex.Classification.UNACCEPTABLE, Apdex.classify(0.25));
@@ -151,7 +140,6 @@ public class ApdexTest {
 
     @Test
     void classification_invalid_values() {
-        // Testando valores inválidos
         assertThrows(IllegalArgumentException.class, () -> Apdex.classify(-0.1));
         assertThrows(IllegalArgumentException.class, () -> Apdex.classify(1.1));
         assertThrows(IllegalArgumentException.class, () -> Apdex.classify(Double.NaN));
@@ -159,15 +147,12 @@ public class ApdexTest {
 
     @Test
     void sampleBased_edge_cases() {
-        // Testando casos extremos
         double[] emptyArray = new double[0];
         double[] singleElement = {50.0};
-        
-        // Array vazio deve lançar exceção
-        assertThrows(IllegalArgumentException.class, 
+
+        assertThrows(IllegalArgumentException.class,
             () -> Apdex.computeApdexFromSamples(emptyArray, 100.0));
         
-        // Elemento único
         double apdex = Apdex.computeApdexFromSamples(singleElement, 100.0);
         assertEquals(1.0, apdex, 1e-9);
         assertEquals(Apdex.Classification.EXCELLENT, Apdex.classify(apdex));
@@ -176,21 +161,16 @@ public class ApdexTest {
     @Test
     void sampleBased_threshold_validation() {
         double[] data = {100.0, 200.0, 300.0};
-        
-        // Threshold zero ou negativo deve lançar exceção
-        assertThrows(IllegalArgumentException.class, 
+        assertThrows(IllegalArgumentException.class,
             () -> Apdex.computeApdexFromSamples(data, 0.0));
         assertThrows(IllegalArgumentException.class, 
             () -> Apdex.computeApdexFromSamples(data, -1.0));
-        
-        // Array nulo deve lançar exceção
-        assertThrows(IllegalArgumentException.class, 
+        assertThrows(IllegalArgumentException.class,
             () -> Apdex.computeApdexFromSamples(null, 100.0));
     }
 
     @Test
     void countsBased_mixed_scenarios() {
-        // Testando cenários com todas as contagens > 0
         double apdex1 = Apdex.computeApdexFromCounts(80, 15, 5); // (80 + 7.5)/100 = 0.875
         assertEquals(0.875, apdex1, 1e-9);
         assertEquals(Apdex.Classification.GOOD, Apdex.classify(apdex1));
@@ -202,13 +182,21 @@ public class ApdexTest {
 
     @Test
     void apdex_formula_verification() {
-        // Verificando a fórmula: (S + T/2) / (S + T + F)
         long S = 70, T = 20, F = 10;
         double expected = (S + 0.5 * T) / (double)(S + T + F);
         double actual = Apdex.computeApdexFromCounts(S, T, F);
         assertEquals(expected, actual, 1e-9);
         assertEquals(0.8, actual, 1e-9);
         assertEquals(Apdex.Classification.FAIR, Apdex.classify(actual));
+    }
+
+    @Test
+    void sampleBased_fair_classification_example() {
+        double T = 100.0;
+        double[] data = new double[]{50.0, 75.0, 90.0, 100.0, 500.0};
+        double apdex = Apdex.computeApdexFromSamples(data, T);
+        assertEquals(0.8, apdex, 1e-9);
+        assertEquals(Apdex.Classification.FAIR, Apdex.classify(apdex));
     }
 }
 

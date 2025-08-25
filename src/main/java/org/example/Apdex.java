@@ -76,7 +76,7 @@ public final class Apdex {
 
     private static void validateCounts(long satisfiedCount, long toleratingCount, long frustratedCount) {
         if (satisfiedCount < 0 || toleratingCount < 0 || frustratedCount < 0) {
-            throw new IllegalArgumentException("Contagens n 3o podem ser negativas");
+            throw new IllegalArgumentException("Contagens não podem ser negativas");
         }
     }
 
