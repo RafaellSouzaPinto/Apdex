@@ -20,55 +20,36 @@ Projeto Java com Maven e JUnit implementando o cálculo e classificação APDEX 
 ```
 src/
 ├── main/java/org/example/
-│   └── Apdex.java          # Classe principal com implementação APDEX
+│   └── Apdex.java          # Implementação com métodos calcularApdex*
 └── test/java/org/example/
-    └── ApdexTest.java      # Testes unitários JUnit
+    ├── ApdexCategoryTest.java  # Testes de categorias (Excelente, Bom, ...)
+    └── ApdexTest.java          # Testes de cálculo por valores e bordas
 ```
 
 ## Funcionalidades Implementadas
 
-### Classe Apdex
+### Classe Apdex (padrão da aula)
 
-- **Cálculo APDEX por contagens**: `computeApdexFromCounts(satisfied, tolerating, frustrated)`
-- **Cálculo APDEX por amostras**: `computeApdexFromSamples(responseTimes, threshold)`
-- **Classificação automática**: `classify(apdexScore)` e `classifyFromSamples()`
-- **Validação de entrada**: Verificação de parâmetros válidos
-
-### Classificações APDEX
-
-- **EXCELLENT**: ≥ 0.94
-- **GOOD**: ≥ 0.85
-- **FAIR**: ≥ 0.70
-- **POOR**: ≥ 0.50
-- **UNACCEPTABLE**: < 0.50
+- `calcularApdex(int s, int to, int ta)`
+- `calcularApdexExcelente(int s, int to, int ta)`
+- `calcularApdexBom(int s, int to, int ta)`
+- `calcularApdexRazoavel(int s, int to, int ta)`
+- `calcularApdexRuim(int s, int to, int ta)`
+- `calcularApdexInaceitavel(int s, int to, int ta)`
+- `classificarApdex(int s, int to, int ta)`
 
 ## Testes Implementados
 
-### Cobertura de Classificações
-
-- ✅ EXCELLENT (0.94 - 1.0)
-- ✅ GOOD (0.85 - 0.93)
-- ✅ FAIR (0.70 - 0.84)
-- ✅ POOR (0.50 - 0.69)
-- ✅ UNACCEPTABLE (0.0 - 0.49)
-
-### Casos de Teste
-
-- **Dataset RM 555130**: Teste com total de amostras igual ao RM
-- **Casos de borda**: Limites exatos de cada classificação
-- **Validação de entrada**: Parâmetros inválidos e exceções
-- **Casos extremos**: Arrays vazios, elementos únicos
-- **Fórmula APDEX**: Verificação matemática da implementação
-- **Testes de classificação específicos**: Exemplos práticos para cada nível APDEX
+- `ApdexCategoryTest` cobre limites e classificação textual
+- `ApdexTest` cobre valores representativos e casos de borda
 
 ### Exemplos de Testes por Classificação
 
-- **EXCELLENT**: `[50, 75, 90]` com T=100 → APDEX = 1.0
-- **GOOD**: Dataset RM 555130 → APDEX = 0.90
-- **FAIR**: `[50, 75, 90, 100, 500]` com T=100 → APDEX = 0.8
-- **POOR**: `[100, 100, 400, 401, 1000]` com T=100 → APDEX = 0.5
-- **UNACCEPTABLE**: `[0, 98, 2]` contagens → APDEX = 0.49
-
+- **EXCELLENT**: `calcularApdex(94, 6, 100) -> 0.97`
+- **GOOD**: `calcularApdex(90, 0, 100) -> 0.90`
+- **FAIR**: `calcularApdex(70, 10, 100) -> 0.75`
+- **POOR**: `calcularApdex(50, 20, 100) -> 0.60`
+- **UNACCEPTABLE**: `calcularApdex(0, 50, 100) -> 0.25`
 
 ### Annotations JUnit
 
