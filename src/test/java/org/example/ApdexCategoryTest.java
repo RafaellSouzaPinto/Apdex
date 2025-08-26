@@ -1,5 +1,7 @@
 package org.example;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +10,18 @@ import static org.junit.jupiter.api.Assertions.*;
 // Rafael Souza Pinto - RM 555130
 public class ApdexCategoryTest {
 
-    private final Apdex apdex = new Apdex();
+    private Apdex apdex;
+    private static int TOTAL_AMOSTRAS_RM;
+
+    @BeforeAll
+    static void setupAll() {
+        TOTAL_AMOSTRAS_RM = 555130; // usado como constante de referência
+    }
+
+    @BeforeEach
+    void setupEach() {
+        apdex = new Apdex();
+    }
 
     // ===== Excelente =====
     @Test

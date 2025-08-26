@@ -26,6 +26,23 @@ src/
     └── ApdexTest.java          # Testes de cálculo por valores e bordas
 ```
 
+## Implementação Final
+
+### Classe Principal: Apdex.java
+
+- **Padrão da aula**: Implementação simplificada com métodos `calcularApdex*`
+- **Nome e RM**: Na primeira linha conforme especificação
+- **Métodos principais**:
+  - `calcularApdex(int s, int to, int ta)` - Cálculo do score APDEX
+  - Métodos booleanos para cada classificação
+  - `classificarApdex()` - Retorna string da classificação
+
+### Classes de Teste
+
+- **ApdexCategoryTest.java**: Testa limites e classificação textual
+- **ApdexTest.java**: Testa valores representativos e casos de borda
+- **Annotations**: @BeforeAll para RM 555130, @BeforeEach para instância
+
 ## Funcionalidades Implementadas
 
 ### Classe Apdex (padrão da aula)
@@ -40,8 +57,26 @@ src/
 
 ## Testes Implementados
 
-- `ApdexCategoryTest` cobre limites e classificação textual
-- `ApdexTest` cobre valores representativos e casos de borda
+### ApdexCategoryTest.java
+
+- **Testes de limites**: Verificação dos valores exatos de cada classificação
+- **Testes de classificação**: Validação da classificação textual retornada
+- **Casos de borda**: Denominador zero, valores acima de 1, valores negativos
+- **Annotations**: @BeforeAll para RM, @BeforeEach para instância Apdex
+
+### ApdexTest.java
+
+- **Testes por classificação**: Valores representativos para cada nível APDEX
+- **Casos de borda**: Limites exatos e valores extremos
+- **Cobertura completa**: Todas as 5 classificações com múltiplos cenários
+- **Annotations**: @BeforeAll para RM, @BeforeEach para instância Apdex
+
+### Annotations JUnit
+
+- **@BeforeAll**: Inicializa constantes/recursos compartilhados (ex.: RM 555130)
+- **@BeforeEach**: Cria uma nova instância de `Apdex` antes de cada teste
+- **@Test**: Todos os métodos de teste unitário
+- **@DisplayName**: Descrições claras para cada teste executado
 
 ### Exemplos de Testes por Classificação
 
@@ -50,11 +85,6 @@ src/
 - **FAIR**: `calcularApdex(70, 10, 100) -> 0.75`
 - **POOR**: `calcularApdex(50, 20, 100) -> 0.60`
 - **UNACCEPTABLE**: `calcularApdex(0, 50, 100) -> 0.25`
-
-### Annotations JUnit
-
-- **@BeforeAll**: Preparação do dataset grande (555130 amostras)
-- **@Test**: Todos os métodos de teste unitário
 
 ## Como Executar
 
