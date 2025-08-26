@@ -105,7 +105,3 @@ mvn test
 ```bash
 mvn clean compile
 ```
-
-## Repositório GitHub
-
-[Apdex Repository](https://github.com/RafaellSouzaPinto/Apdex.git)
