@@ -1,4 +1,4 @@
-// Rafael Souza Pinto - RM 555130
+// Rafael de Souza Pinto - RM 555130
 package org.example;
 
 public class Apdex {
