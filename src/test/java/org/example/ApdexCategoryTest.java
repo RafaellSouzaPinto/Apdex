@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-// Rafael Souza Pinto - RM 555130
+// Rafael de Souza Pinto - RM 555130
 public class ApdexCategoryTest {
 
     private Apdex apdex;
