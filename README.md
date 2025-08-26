@@ -6,7 +6,7 @@ Projeto Java com Maven e JUnit implementando o cálculo e classificação APDEX 
 
 ## Autor
 
-**Rafael Souza Pinto - RM 555130**
+**Rafael de Souza Pinto - RM 555130**
 
 ## Tecnologias
 
