@@ -2,7 +2,7 @@
 
 ## Descrição
 
-Projeto Java com Maven e JUnit implementando o cálculo e classificação APDEX (Application Performance Index) seguindo a metodologia TDD (Test-Driven Development).
+Projeto Java com Maven e JUnit implementando o cálculo e classificação APDEX (Application Performance Index) seguindo a metodologia TDD (Test-Driven Development) conforme padrão ensinado em aula.
 
 ## Autor
 
@@ -47,36 +47,26 @@ src/
 
 ### Classe Apdex (padrão da aula)
 
-- `calcularApdex(int s, int to, int ta)`
-- `calcularApdexExcelente(int s, int to, int ta)`
-- `calcularApdexBom(int s, int to, int ta)`
-- `calcularApdexRazoavel(int s, int to, int ta)`
-- `calcularApdexRuim(int s, int to, int ta)`
-- `calcularApdexInaceitavel(int s, int to, int ta)`
-- `classificarApdex(int s, int to, int ta)`
+- `calcularApdex(int s, int to, int ta)` - Calcula o score APDEX
+- `calcularApdexExcelente(int s, int to, int ta)` - Verifica se é Excelente (≥0.94)
+- `calcularApdexBom(int s, int to, int ta)` - Verifica se é Bom (≥0.85)
+- `calcularApdexRazoavel(int s, int to, int ta)` - Verifica se é Razoável (≥0.70)
+- `calcularApdexRuim(int s, int to, int ta)` - Verifica se é Ruim (≥0.50)
+- `calcularApdexInaceitavel(int s, int to, int ta)` - Verifica se é Inaceitável (<0.50)
+- `classificarApdex(int s, int to, int ta)` - Retorna classificação textual
+
+### Classificações APDEX
+
+- **EXCELLENT**: ≥ 0.94
+- **GOOD**: ≥ 0.85
+- **FAIR**: ≥ 0.70
+- **POOR**: ≥ 0.50
+- **UNACCEPTABLE**: < 0.50
 
 ## Testes Implementados
 
-### ApdexCategoryTest.java
-
-- **Testes de limites**: Verificação dos valores exatos de cada classificação
-- **Testes de classificação**: Validação da classificação textual retornada
-- **Casos de borda**: Denominador zero, valores acima de 1, valores negativos
-- **Annotations**: @BeforeAll para RM, @BeforeEach para instância Apdex
-
-### ApdexTest.java
-
-- **Testes por classificação**: Valores representativos para cada nível APDEX
-- **Casos de borda**: Limites exatos e valores extremos
-- **Cobertura completa**: Todas as 5 classificações com múltiplos cenários
-- **Annotations**: @BeforeAll para RM, @BeforeEach para instância Apdex
-
-### Annotations JUnit
-
-- **@BeforeAll**: Inicializa constantes/recursos compartilhados (ex.: RM 555130)
-- **@BeforeEach**: Cria uma nova instância de `Apdex` antes de cada teste
-- **@Test**: Todos os métodos de teste unitário
-- **@DisplayName**: Descrições claras para cada teste executado
+- `ApdexCategoryTest` cobre limites e classificação textual
+- `ApdexTest` cobre valores representativos e casos de borda
 
 ### Exemplos de Testes por Classificação
 
@@ -85,6 +75,11 @@ src/
 - **FAIR**: `calcularApdex(70, 10, 100) -> 0.75`
 - **POOR**: `calcularApdex(50, 20, 100) -> 0.60`
 - **UNACCEPTABLE**: `calcularApdex(0, 50, 100) -> 0.25`
+
+### Annotations JUnit
+
+- **@BeforeAll**: Preparação do dataset grande (555130 amostras)
+- **@Test**: Todos os métodos de teste unitário
 
 ## Como Executar
 
@@ -102,46 +97,13 @@ mvn test
 
 # Via IntelliJ
 # Clique direito em ApdexTest.java → Run 'ApdexTest'
+# Clique direito em ApdexCategoryTest.java → Run 'ApdexCategoryTest'
 ```
 
 ### Build do Projeto
 
 ```bash
 mvn clean compile
-```
-
-## Fórmula APDEX
-
-```
-APDEX = (Satisfied + Tolerating/2) / Total_Samples
-
-Onde:
-- Satisfied: Respostas ≤ T (threshold)
-- Tolerating: T < Respostas ≤ 4T
-- Frustrated: Respostas > 4T
-```
-
-## Critérios de Entrega ✅
-
-- [x] Projeto Java com Maven e JUnit
-- [x] Total de amostras = RM 555130
-- [x] Nome e RM na primeira linha de cada classe
-- [x] Uso de @BeforeAll para contexto apropriado
-- [x] Cobertura de todas as classificações APDEX
-- [x] Testes passando com sucesso no IntelliJ + JDK 17
-
-### Logs de Teste Esperados
-
-```
-✅ sampleBased_apdexAndClassification_withRmDataset
-✅ countsBased_classification_excellent
-✅ countsBased_classification_good
-✅ countsBased_classification_fair
-✅ countsBased_classification_poor
-✅ countsBased_classification_unacceptable
-✅ sampleBased_boundary_includesEquals
-✅ sampleBased_fair_classification_example
-... (todos os testes passando)
 ```
 
 ## Repositório GitHub
